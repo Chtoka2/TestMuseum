@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Экспонаты — {{ museum_name|default:"Музей школы 22" }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="page-title">Наши экспонаты</h1>
+    <div class="exhibit-grid">
+        {% for exhibit in exhibits %}
+    <article class="exhibit-card">
+        <a href="{% url 'exhibit_detail' exhibit.pk %}">
+            <div class="exhibit-card__image">
+                {% with exhibit.images.first as img %}
+                    {% if img and img.image %}
+                        <img src="{{ img.image.url }}" alt="{{ exhibit.title }}">
+                    {% else %}
+                        <div class="no-image">Нет фото</div>
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <div class="exhibit-card__content">
+                <h2>{{ exhibit.title }}</h2>
+                {% if exhibit.category %}
+                    <div class="exhibit-field">
+                        <span class="field-label">Категория:</span>
+                        <span class="field-value">{{ exhibit.category }}</span>
+                    </div>
+                {% endif %}
+                {% if exhibit.approximate_year %}
+                    <div class="exhibit-field">
+                        <span class="field-label">Год:</span>
+                        <span class="field-value">{{ exhibit.approximate_year }}</span>
+                    </div>
+                {% endif %}
+                <p class="exhibit-card__description">
+                    {{ exhibit.description|truncatewords:20 }}
+                </p>
+            </div>
+        </a>
+    </article>
+{% empty %}
+    ...
+{% endfor %}
+    </div>
+</div>
+{% endblock %}

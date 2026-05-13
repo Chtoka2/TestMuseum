@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ exhibit.title }} — {{ museum_name|default:"Музей школы 22" }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <article class="exhibit-detail">
+        <h1 class="page-title">{{ exhibit.title }}</h1>
+        <div class="exhibit-detail__meta">
+            {% if exhibit.category %}
+                <div class="exhibit-detail-field">
+                    <span class="field-label">Категория:</span>
+                    <span class="field-value">{{ exhibit.category }}</span>
+                </div>
+            {% endif %}
+            {% if exhibit.approximate_year %}
+                <div class="exhibit-detail-field">
+                    <span class="field-label">Год:</span>
+                    <span class="field-value">{{ exhibit.approximate_year }}</span>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="exhibit-detail__gallery">
+            {% for image in exhibit.images.all %}
+                <figure class="gallery-item">
+                    <img src="{{ image.image.url }}" alt="{{ image.caption|default:exhibit.title }}">
+                    {% if image.caption %}
+                        <figcaption>{{ image.caption }}</figcaption>
+                    {% endif %}
+                </figure>
+            {% empty %}
+                <p class="empty-message">Фотографии отсутствуют.</p>
+            {% endfor %}
+        </div>
+
+        <div class="exhibit-detail__content">
+            {{ exhibit.description|linebreaks }}
+        </div>
+
+        <a href="{% url 'exhibits' %}" class="btn btn--back">← Вернуться к списку экспонатов</a>
+    </article>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Новости — {{ museum_name|default:"Музей школы 22" }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="page-title">Новости</h1>
+    <div class="news-list-detailed">
+        {% for article in articles %}
+            <article class="news-block">
+                <h2 class="news-block__title">
+                    <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
+                </h2>
+                <time class="news-block__date" datetime="{{ article.published_at|date:'Y-m-d' }}">
+                    {{ article.published_at|date:"d.m.Y, H:i" }}
+                </time>
+                {% if article.image %}
+                    <div class="news-block__image">
+                        <img src="{{ article.image.url }}" alt="{{ article.title }}">
+                    </div>
+                {% endif %}
+                <p class="news-block__excerpt">{{ article.body|truncatewords:35 }}</p>
+                <a href="{{ article.get_absolute_url }}" class="btn btn--small">Читать дальше →</a>
+            </article>
+        {% empty %}
+            <p class="empty-message">Пока новостей нет.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

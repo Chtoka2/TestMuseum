@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ article.title }} — {{ museum_name|default:"Музей школы 22" }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <article class="news-detail">
+        <h1 class="page-title">{{ article.title }}</h1>
+        <time class="news-detail__date" datetime="{{ article.published_at|date:'Y-m-d' }}">
+            {{ article.published_at|date:"d.m.Y, H:i" }}
+        </time>
+        {% if article.image %}
+            <div class="news-detail__image">
+                <img src="{{ article.image.url }}" alt="{{ article.title }}">
+            </div>
+        {% endif %}
+        <div class="news-detail__body">
+            {{ article.body|linebreaks }}
+        </div>
+        <a href="{% url 'article_list' %}" class="btn btn--back">← К списку новостей</a>
+    </article>
+</div>
+{% endblock %}

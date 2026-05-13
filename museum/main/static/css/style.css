@@ -1,0 +1,397 @@
+/* === Подключение шрифтов (резерв) === */
+/* Если не подключили через HTML, используем системные */
+:root {
+    --color-primary: #2e2e2e;
+    --color-accent: #b38b5b;
+    --color-accent-light: #d4b68a;
+    --color-bg-start: #faf7f2;
+    --color-bg-end: #f0e9df;
+    --color-text: #3a3a3a;
+    --color-muted: #6b6b6b;
+    --font-heading: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --font-main: 'Raleway', 'Segoe UI', Roboto, sans-serif;
+    --container-max: 1200px;
+    --gap: 24px;
+    --border-radius: 14px;
+    --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.05);
+    --shadow-medium: 0 12px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* === Глобальные сбросы === */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    height: 100%;               /* обязательно */
+}
+
+body {
+    height: 100%;               /* растягиваем на всю высоту */
+    margin: 0;
+    font-family: var(--font-main);
+    background: linear-gradient(135deg, var(--color-bg-start) 0%, var(--color-bg-end) 100%);
+    background-attachment: fixed;
+    color: var(--color-text);
+    line-height: 1.7;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Текстурный оверлей оставляем, он не влияет на высоту */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4c5b2' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+/* === Утилиты === */
+.container {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* === Шапка (более воздушная) === */
+.header {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(0,0,0,0.03);
+}
+.header__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 72px;
+}
+.logo {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    letter-spacing: 0.5px;
+}
+
+/* Навигация */
+.nav__toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--color-primary);
+}
+.nav__list {
+    display: flex;
+    gap: 30px;
+    list-style: none;
+}
+.nav__list a {
+    color: var(--color-primary);
+    font-weight: 500;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s;
+}
+.nav__list a:hover {
+    border-bottom-color: var(--color-accent);
+    color: var(--color-accent);
+}
+
+/* === Мобильное меню (адаптация) === */
+@media (max-width: 768px) {
+    .nav__toggle {
+        display: block;
+    }
+    .nav__list {
+        display: none;
+        position: absolute;
+        top: 72px;
+        left: 0;
+        right: 0;
+        background: rgba(255,255,255,0.95);
+        backdrop-filter: blur(12px);
+        flex-direction: column;
+        padding: 20px;
+        box-shadow: var(--shadow-medium);
+        border-radius: 0 0 var(--border-radius) var(--border-radius);
+    }
+    .nav__list--open {
+        display: flex;
+    }
+}
+
+/* === Основной контент === */
+.main-content {
+    flex: 1 0 auto;    /* забирает всё доступное пространство, футер прижимается вниз */
+    padding: 40px 0;   /* умеренный отступ сверху и снизу */
+}
+.main-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 50px;
+    align-items: start;
+}
+
+/* === Приветственный блок === */
+.welcome h1 {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+    color: var(--color-primary);
+    position: relative;
+}
+/* Декоративная линия под заголовком */
+.welcome h1::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 3px;
+    background: var(--color-accent);
+    margin-top: 12px;
+    border-radius: 2px;
+}
+
+.welcome__description {
+    font-size: 1.15rem;
+    line-height: 1.9;
+    color: var(--color-muted);
+    font-style: italic;
+    border-left: 3px solid var(--color-accent-light);
+    padding-left: 24px;
+    margin-top: 20px;
+}
+
+/* === Боковая панель новостей === */
+.news-sidebar {
+    background: #ffffff;
+    border-radius: var(--border-radius);
+    padding: 28px;
+    box-shadow: var(--shadow-soft);
+    position: sticky;
+    top: 90px;
+    border: 1px solid rgba(0,0,0,0.03);
+    transition: box-shadow 0.3s;
+}
+.news-sidebar:hover {
+    box-shadow: var(--shadow-medium);
+}
+
+.news-sidebar__title {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 22px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--color-accent);
+    color: var(--color-primary);
+}
+
+.news-list {
+    list-style: none;
+}
+
+.news-list li {
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px dashed #e0d7cc;
+    transition: transform 0.2s;
+}
+.news-list li:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+.news-list li:hover {
+    transform: translateX(4px);
+}
+
+.news-list a {
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: block;
+    color: var(--color-primary);
+    line-height: 1.5;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.news-list a:hover {
+    color: var(--color-accent);
+}
+
+.news-date {
+    font-size: 0.8rem;
+    color: #aaa;
+    display: block;
+    margin-top: 6px;
+    font-weight: 400;
+}
+
+/* Сообщение "Пока новостей нет" */
+.news-list li:only-child {
+    color: var(--color-muted);
+    font-style: italic;
+    text-align: center;
+    border: none;
+    padding: 12px 0;
+}
+.news-list li:only-child:hover {
+    transform: none;
+}
+
+/* === Подвал (тёмный, контрастный) === */
+.footer--simple {
+    background: #2e2e2e;
+    color: #ccc;
+    padding: 30px 0;
+    text-align: center;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    border-top: 4px solid var(--color-accent);
+    margin-top: 60px;
+}
+/* === Подвал === */
+.footer--simple {
+    flex-shrink: 0;    /* не сжимается */
+    background: #2e2e2e;
+    color: #ccc;
+    padding: 24px 0;
+    text-align: center;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    border-top: 4px solid var(--color-accent);
+    /* margin-top убран */
+}
+
+/* === Адаптивность главной сетки === */
+@media (max-width: 768px) {
+    .main-grid {
+        grid-template-columns: 1fr;
+    }
+    .news-sidebar {
+        position: static;
+        margin-top: 30px;
+    }
+    .welcome h1 {
+        font-size: 2.2rem;
+    }
+}
+/* === Основной контент === */
+.main-content {
+    flex: 1;                /* заставляет main растянуться, выталкивая footer вниз */
+    padding: 50px 0 20px;   /* уменьшил верхний и нижний отступ */
+}
+/* === Список новостных блоков === */
+.news-list-detailed {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.news-block {
+    padding: 25px 0;
+    border-bottom: 1px solid #d4c5b2;  /* декоративная линия */
+    transition: background 0.2s;
+}
+.news-block:last-child {
+    border-bottom: none;
+}
+.news-block:hover {
+    background: rgba(255,255,255,0.4);  /* лёгкий фон при наведении */
+    border-radius: 8px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.news-block__title {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    margin-bottom: 6px;
+}
+.news-block__title a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.news-block__title a:hover {
+    color: var(--color-accent);
+}
+
+.news-block__date {
+    display: block;
+    font-size: 0.85rem;
+    color: #999;
+    margin-bottom: 12px;
+}
+
+.news-block__image img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.news-block__excerpt {
+    font-size: 1.0rem;
+    color: var(--color-text);
+    line-height: 1.7;
+    margin-bottom: 15px;
+}
+
+/* === Детальная новость === */
+.news-detail {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.news-detail__date {
+    display: block;
+    color: #999;
+    margin-bottom: 20px;
+}
+
+.news-detail__image img {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: var(--shadow-soft);
+}
+
+.news-detail__body {
+    background: #fff;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    line-height: 1.8;
+    font-size: 1.05rem;
+    margin-bottom: 25px;
+}

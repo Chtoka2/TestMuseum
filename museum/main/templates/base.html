@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Музей школы 22{% endblock %}</title>
+    
+    {% block extra_head %}
+    <!-- Шрифты и дополнительные стили по умолчанию -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Raleway:wght@400;500;600&display=swap" rel="stylesheet">
+    {% endblock %}
+    
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <!-- Шапка -->
+    <header class="header">
+        <div class="container header__inner">
+            <a href="/" class="logo">🎨 {{ museum_name|default:"Музей школы 22" }}</a>
+            <nav class="nav" id="nav">
+                <button class="nav__toggle" id="navToggle" aria-label="Меню">☰</button>
+                <ul class="nav__list" id="navList">
+                    {% block nav %}
+                    <li><a href="/">Главная</a></li>
+                    <li><a href="{% url 'exhibits' %}">Экспонаты</a></li>
+                    <li><a href="{% url 'article_list' %}">Новости</a></li>
+                    {% endblock %}
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="main-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Подвал -->
+    <footer class="footer footer--simple">
+        <div class="container">
+            <small>© {% now "Y" %} {{ museum_name|default:"Музей школы 22" }}</small>
+        </div>
+    </footer>
+
+    <!-- Скрипт мобильного меню -->
+    <script>
+        const toggle = document.getElementById('navToggle');
+        const navList = document.getElementById('navList');
+        toggle.addEventListener('click', () => {
+            navList.classList.toggle('nav__list--open');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ museum_name }} — Главная{% endblock %}
+
+{% block nav %}
+    {{ block.super }}
+    {% comment %}
+    <li><a href="{% url 'exhibitions' %}">Выставки</a></li>
+    <li><a href="{% url 'events' %}">События</a></li>
+    <li><a href="{% url 'about' %}">О музее</a></li>
+    <li><a href="{% url 'contacts' %}">Контакты</a></li>
+    {% endcomment %}
+{% endblock %}
+
+{% block content %}
+<div class="container main-grid">
+    <section class="welcome">
+        <h1>{{ museum_name }}</h1>
+        <div class="welcome__description">
+            {{ museum_description|linebreaks }}
+        </div>
+    </section>
+
+    <aside class="news-sidebar">
+        <h2 class="news-sidebar__title">Последние новости</h2>
+        <ul class="news-list">
+            {% for news in latest_news %}
+                <li>
+                    <a href="{{ news.get_absolute_url }}">{{ news.title }}</a>
+                    {% if news.published_at %}
+                        <span class="news-date">{{ news.published_at|date:"d.m.Y" }}</span>
+                    {% endif %}
+                </li>
+            {% empty %}
+                <li>Пока новостей нет.</li>
+            {% endfor %}
+        </ul>
+    </aside>
+</div>
+{% endblock %}
